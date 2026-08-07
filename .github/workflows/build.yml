@@ -68,11 +68,62 @@ jobs:
           }
           EOF
 
-          # Generating the layout file using a 100% verified Base64 string
-          echo 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48TGluZWFyTGF5b3V0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCIgYW5kcm9pZDpsYXlvdXRfd2lkdGg9Im1hdGNoX3BhcmVudCIgYW5kcm9pZDpsYXlvdXRfaGVpZ2h0PSJtYXRjaF9wYXJlbnQiIGFuZHJvaWQ6b3JpZW50YXRpb249InZlcnRpY2FsIiBhbmRyb2lkOnBhZGRpbmc9IjE2ZHAiIGFuZHJvaWQ6Z3Jhdml0eT0iY2VudGVyIiBhbmRyb2lkOmJhY2tncm91bmQ9IiMxMjEyMTIiPjxUZXh0VmlldyBhbmRyb2lkOnRleHQ9IlZvaWRzdHJhcCBBbmRyb2lkIiBhbmRyb2lkOnRleHRTaXplPSIzMHNwIiBhbmRyb2lkOnRleHRTdHlsZT0iYm9sZCIgYW5kcm9pZDp0ZXh0Q29sb3I9IiMwMEJDRDQiIGFuZHJvaWQ6bGF5b3V0X3dpZHRoPSJ3cmFwX2NvbnRlbnQiIGFuZHJvaWQ6bGF5b3V0X2hlaWdodD0id3JhcF9jb250ZW50IiBhbmRyb2lkOmxheW91dF9tYXJnaW5Cb3R0b209IjIwZHAiLz48VGV4dFZpZXcgYW5kcm9pZDp0ZXh0PSJQYXN0ZSB5b3VyIEZGbGFncyBKU09OOiIgYW5kcm9pZDp0ZXh0U2l6ZT0iMThzcCIgYW5kcm9pZDp0ZXh0Q29sb3I9IiNGRkZGRkYiIGFuZHJvaWQ6bGF5b3V0X3dpZHRoPSJ3cmFwX2NvbnRlbnQiIGFuZHJvaWQ6bGF5b3V0X2hlaWdodD0id3JhcF9jb250ZW50Ii8+PEVkaXRUZXh0IGFuZHJvaWQ6aWQ9IkBpZC9mbGFnSW5wdXQiIGFuZHJvaWQ6aGludD0ie1wiRkZsYWdEZWJ1Z1NreUdyYXlcIjogdHJ1ZX0iIGFuZHJvaWQ6dGV4dFNpemU9IjE2c3AiIGFuZHJvaWQ6YmFja2dyb3VuZD0iIzMzMzMzMyIgYW5kcm9pZDp0ZXh0Q29sb3I9IiNGRkZGRkYiIGFuZHJvaWQ6aGludFRleHRDb2xvcj0iIzg4ODg4OCIgYW5kcm9pZDpwYWRkaW5nPSIxMnBwIiBhbmRyb2lkOm1pbkhlaWdodD0iMTIwZHAiIGFuZHJvaWQ6Z3Jhdml0eT0idG9wIiBhbmRyb2lkOmxheW91dF93aWR0aD0ibWF0Y2hfcGFyZW50IiBhbmRyb2lkOmxheW91dF9oZWlnaHQ9IndyYXBfY29udGVudCIvPjxCdXR0b24gYW5kcm9pZDppZD0iQGlkL2luamVjdEJ0biIgYW5kcm9pZDp0ZXh0PSJJTkpFQ1QgRkxBR1MiIGFuZHJvaWQ6dGV4dFNpemU9IjE2c3AiIGFuZHJvaWQ6YmFja2dyb3VuZFRpbnQ9IiMwMEJDRDQiIGFuZHJvaWQ6dGV4dENvbG9yPSIjMDAwMDAwIiBhbmRyb2lkOmxheW91dF93aWR0aD0ibWF0Y2hfcGFyZW50IiBhbmRyb2lkOmxheW91dF9oZWlnaHQ9IjYwZHAiIGFuZHJvaWQ6bGF5b3V0X21hcmdpblRvcD0iMjBkcCIvPjxUZXh0VmlldyBhbmRyb2lkOmlkPSJAaWQvc3RhdHVzVGV4dCIgYW5kcm9pZDp0ZXh0PSJSZWFkeSIgYW5kcm9pZDp0ZXh0U2l6ZT0iMTRzcCIgYW5kcm9pZDp0ZXh0Q29sb3I9IiNGRkZGRkYiIGFuZHJvaWQ6bGF5b3V0X3dpZHRoPSJtYXRjaF9wYXJlbnQiIGFuZHJvaWQ6bGF5b3V0X2hlaWdodD0id3JhcF9jb250ZW50IiBhbmRyb2lkOmxheW91dF9tYXJnaW5Ub3A9IjIwZHAiIGFuZHJvaWQ6Z3Jhdml0eT0iY2VudGVyIi8+PC9MaW5lYXJMYXlvdXQ+' | base64 -d > app/src/main/res/layout/layout.xml
-
-          # Verifying the file was created perfectly
-          cat app/src/main/res/layout/layout.xml
+          # BUILDING XML LINE BY LINE TO COMPLETELY AVOID YAML/BASE64 BUGS
+          cat > app/src/main/res/layout/layout.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:padding="16dp"
+          android:gravity="center"
+          android:background="#121212">
+          <TextView
+          android:text="Voidstrap Android"
+          android:textSize="30sp"
+          android:textStyle="bold"
+          android:textColor="#00BCD4"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="20dp"/>
+          <TextView
+          android:text="Paste your FFlags JSON:"
+          android:textSize="18sp"
+          android:textColor="#FFFFFF"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+          <EditText
+          android:id="@+id/flagInput"
+          android:hint='{"FFlagDebugSkyGray": true}'
+          android:textSize="16sp"
+          android:background="#333333"
+          android:textColor="#FFFFFF"
+          android:hintTextColor="#888888"
+          android:padding="12dp"
+          android:minHeight="120dp"
+          android:gravity="top"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+          <Button
+          android:id="@+id/injectBtn"
+          android:text="INJECT FLAGS"
+          android:textSize="18sp"
+          android:backgroundTint="#00BCD4"
+          android:textColor="#000000"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:layout_marginTop="20dp"/>
+          <TextView
+          android:id="@+id/statusText"
+          android:text="Ready"
+          android:textSize="14sp"
+          android:textColor="#FFFFFF"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:gravity="center"/>
+          </LinearLayout>
+          EOF
 
           cat > app/src/main/assets/inject.lua << 'EOF'
           local flags = [[FLAGS_JSON]]
