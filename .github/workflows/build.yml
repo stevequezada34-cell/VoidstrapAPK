@@ -6,12 +6,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/android-actions/sdk:latest
 
     steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Install Android SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-11076708_latest.zip
+          mkdir -p android-sdk/cmdline-tools
+          mv cmdline-tools android-sdk/cmdline-tools/latest
+          export ANDROID_SDK_ROOT=$PWD/android-sdk
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;30.0.3"
+
       - name: Create project files
         run: |
+          export ANDROID_SDK_ROOT=$PWD/android-sdk
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
           mkdir -p app/src/main/java/com/voidstrap/android
           mkdir -p app/src/main/res/layout
           mkdir -p app/src/main/res/values
@@ -152,6 +171,8 @@ jobs:
 
       - name: Build APK
         run: |
+          export ANDROID_SDK_ROOT=$PWD/android-sdk
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
           cat > build.gradle << 'EOF'
           buildscript {
               repositories { google(); mavenCentral() }
