@@ -13,9 +13,9 @@ jobs:
           repository: android/ndk-samples
           path: template
 
-      - name: Copy template and build
+      - name: Copy template and create project
         run: |
-          cp -r template/hello-jni/* .
+          cp -r template/hello-jni/* app/
           mkdir -p app/src/main/java/com/voidstrap/android
           mkdir -p app/src/main/assets
           mkdir -p app/src/main/res/layout
@@ -152,6 +152,24 @@ jobs:
                   </activity>
               </application>
           </manifest>
+          EOF
+
+          cat > settings.gradle << 'EOF'
+          rootProject.name = 'VoidstrapAndroid'
+          include ':app'
+          EOF
+
+          cat > build.gradle << 'EOF'
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
+          }
+          allprojects { repositories { google(); mavenCentral() } }
+          EOF
+
+          cat > gradle.properties << 'EOF'
+          org.gradle.jvmargs=-Xmx2048m
+          android.useAndroidX=true
           EOF
 
           curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
