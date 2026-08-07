@@ -68,7 +68,8 @@ jobs:
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:padding="16dp"
-              android:gravity="center">
+              android:gravity="center"
+              android:background="#121212">
               <TextView android:text="Voidstrap Android"
                   android:textSize="28sp"
                   android:textStyle="bold"
@@ -137,7 +138,10 @@ jobs:
                   android:allowBackup="true"
                   android:label="Voidstrap Android"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
-                  <activity android:name=".MainActivity">
+                  <!-- FIXED: Added android:exported="true" to fix the build error -->
+                  <activity 
+                      android:name=".MainActivity"
+                      android:exported="true">
                       <intent-filter>
                           <action android:name="android.intent.action.MAIN" />
                           <category android:name="android.intent.category.LAUNCHER" />
