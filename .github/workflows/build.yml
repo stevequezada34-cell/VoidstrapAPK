@@ -13,8 +13,9 @@ jobs:
           repository: android/ndk-samples
           path: template
 
-      - name: Copy template and create project
+      - name: Create project structure
         run: |
+          mkdir -p app
           cp -r template/hello-jni/* app/
           mkdir -p app/src/main/java/com/voidstrap/android
           mkdir -p app/src/main/assets
