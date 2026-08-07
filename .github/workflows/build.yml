@@ -21,6 +21,32 @@ jobs:
           mkdir -p app/src/main/res/layout
           mkdir -p gradle/wrapper
 
+          # BUILD THE LAYOUT FILE INSIDE JAVA TO 100% AVOID GITHUB FILE TRUNCATION
+          cat > app/src/main/java/com/voidstrap/android/GenerateLayout.java << 'EOF'
+          package com.voidstrap.android;
+          import java.io.File;
+          import java.io.FileWriter;
+          import java.io.IOException;
+          public class GenerateLayout {
+              public static void main(String[] args) {
+                  String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\" android:layout_width=\"match_parent\" android:layout_height=\"match_parent\" android:orientation=\"vertical\" android:padding=\"16dp\" android:gravity=\"center\" android:background=\"#121212\"><TextView android:text=\"Voidstrap Android\" android:textSize=\"30sp\" android:textStyle=\"bold\" android:textColor=\"#00BCD4\" android:layout_width=\"wrap_content\" android:layout_height=\"wrap_content\" android:layout_marginBottom=\"20dp\"/><TextView android:text=\"Paste your FFlags JSON:\" android:textSize=\"18sp\" android:textColor=\"#FFFFFF\" android:layout_width=\"wrap_content\" android:layout_height=\"wrap_content\"/><EditText android:id=\"@+id/flagInput\" android:hint=\"{\\\"FFlagDebugSkyGray\\\": true}\" android:textSize=\"16sp\" android:background=\"#333333\" android:textColor=\"#FFFFFF\" android:hintTextColor=\"#888888\" android:padding=\"12dp\" android:minHeight=\"120dp\" android:gravity=\"top\" android:layout_width=\"match_parent\" android:layout_height=\"wrap_content\"/><Button android:id=\"@+id/injectBtn\" android:text=\"INJECT FLAGS\" android:textSize=\"18sp\" android:backgroundTint=\"#00BCD4\" android:textColor=\"#000000\" android:layout_width=\"match_parent\" android:layout_height=\"60dp\" android:layout_marginTop=\"20dp\"/><TextView android:id=\"@+id/statusText\" android:text=\"Ready\" android:textSize=\"14sp\" android:textColor=\"#FFFFFF\" android:layout_width=\"match_parent\" android:layout_height=\"wrap_content\" android:layout_marginTop=\"20dp\" android:gravity=\"center\"/></LinearLayout>";
+                  try {
+                      File file = new File("app/src/main/res/layout/layout.xml");
+                      file.getParentFile().mkdirs();
+                      FileWriter writer = new FileWriter(file);
+                      writer.write(xml);
+                      writer.close();
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                  }
+              }
+          }
+          EOF
+
+          # COMPILE AND RUN THE GENERATOR BEFORE COMPILING THE APP
+          javac -d . app/src/main/java/com/voidstrap/android/GenerateLayout.java
+          java com.voidstrap.android.GenerateLayout
+
           cat > app/src/main/java/com/voidstrap/android/MainActivity.java << 'EOF'
           package com.voidstrap.android;
           import android.os.Bundle;
@@ -67,9 +93,6 @@ jobs:
               }
           }
           EOF
-
-          # WRITE THE FILE AS ONE SINGLE LINE TO AVOID GITHUB BLANK LINES
-          printf '<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="16dp" android:gravity="center" android:background="#121212"><TextView android:text="Voidstrap Android" android:textSize="30sp" android:textStyle="bold" android:textColor="#00BCD4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp"/><TextView android:text="Paste your FFlags JSON:" android:textSize="18sp" android:textColor="#FFFFFF" android:layout_width="wrap_content" android:layout_height="wrap_content"/><EditText android:id="@+id/flagInput" android:hint="{\"FFlagDebugSkyGray\": true}" android:textSize="16sp" android:background="#333333" android:textColor="#FFFFFF" android:hintTextColor="#888888" android:padding="12dp" android:minHeight="120dp" android:gravity="top" android:layout_width="match_parent" android:layout_height="wrap_content"/><Button android:id="@+id/injectBtn" android:text="INJECT FLAGS" android:textSize="18sp" android:backgroundTint="#00BCD4" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="60dp" android:layout_marginTop="20dp"/><TextView android:id="@+id/statusText" android:text="Ready" android:textSize="14sp" android:textColor="#FFFFFF" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:gravity="center"/></LinearLayout>' > app/src/main/res/layout/layout.xml
 
           cat > app/src/main/assets/inject.lua << 'EOF'
           local flags = [[FLAGS_JSON]]
