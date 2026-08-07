@@ -29,6 +29,7 @@ jobs:
 
       - name: Create project files
         run: |
+          unset ANDROID_SDK_ROOT
           export ANDROID_HOME=$HOME/android-sdk
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
           mkdir -p app/src/main/java/com/voidstrap/android
@@ -171,6 +172,7 @@ jobs:
 
       - name: Build APK
         run: |
+          unset ANDROID_SDK_ROOT
           export ANDROID_HOME=$HOME/android-sdk
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
           cat > build.gradle << 'EOF'
