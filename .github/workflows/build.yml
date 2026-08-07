@@ -18,14 +18,11 @@ jobs:
 
       - name: Create project files
         run: |
-          # Create ALL directories first
           mkdir -p app/src/main/java/com/voidstrap/android
           mkdir -p app/src/main/res/layout
           mkdir -p app/src/main/res/values
           mkdir -p app/src/main/assets
-          mkdir -p gradle/wrapper
 
-          # MainActivity.java
           cat > app/src/main/java/com/voidstrap/android/MainActivity.java << 'EOF'
           package com.voidstrap.android;
           import android.os.Bundle;
@@ -73,7 +70,6 @@ jobs:
           }
           EOF
 
-          # activity_main.xml
           cat > app/src/main/res/layout/activity_main.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -124,7 +120,6 @@ jobs:
           </LinearLayout>
           EOF
 
-          # inject.lua
           cat > app/src/main/assets/inject.lua << 'EOF'
           local flags = [[FLAGS_JSON]]
           local success, data = pcall(function()
@@ -143,7 +138,6 @@ jobs:
           end
           EOF
 
-          # AndroidManifest.xml
           cat > app/src/main/AndroidManifest.xml << 'EOF'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
               package="com.voidstrap.android">
@@ -162,11 +156,18 @@ jobs:
           </manifest>
           EOF
 
-          # build.gradle
-          cat > app/build.gradle << 'EOF'
-          plugins {
-              id 'com.android.application'
+      - name: Build APK with Gradle directly
+        run: |
+          cat > build.gradle << 'EOF'
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
           }
+          allprojects { repositories { google(); mavenCentral() } }
+          EOF
+
+          cat > app/build.gradle << 'EOF'
+          apply plugin: 'com.android.application'
           android {
               namespace 'com.voidstrap.android'
               compileSdk 33
@@ -183,61 +184,21 @@ jobs:
           }
           EOF
 
-          # settings.gradle
           cat > settings.gradle << 'EOF'
-          pluginManagement {
-              repositories {
-                  google()
-                  mavenCentral()
-                  gradlePluginPortal()
-              }
-          }
-          dependencyResolutionManagement {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
-          rootProject.name = "VoidstrapAndroid"
+          rootProject.name = 'VoidstrapAndroid'
           include ':app'
           EOF
 
-          # gradle.properties
           cat > gradle.properties << 'EOF'
           org.gradle.jvmargs=-Xmx2048m
           android.useAndroidX=true
           EOF
 
-          # gradle-wrapper.jar
-          curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
-
-          # gradle-wrapper.properties
-          cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.2-bin.zip
-          EOF
-
-          # gradlew
-          cat > gradlew << 'EOF'
-          #!/bin/sh
-          exec java -cp "$(dirname "$0")/gradle/wrapper/gradle-wrapper.jar" org.gradle.wrapper.GradleWrapperMain "$@"
-          EOF
-          chmod +x gradlew
-
-          # gradlew.bat
-          cat > gradlew.bat << 'EOF'
-          @if "%DEBUG%" == "" @echo off
-          set DIRNAME=%~dp0
-          if "%DIRNAME%" == "" set DIRNAME=.
-          set APP_BASE_NAME=%~n0
-          set APP_HOME=%DIRNAME%
-          set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
-          "%JAVA_EXE%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %*
-          EOF
-
       - name: Build APK
         run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          wget https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          unzip gradle-8.2-bin.zip
+          ./gradle-8.2/bin/gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
