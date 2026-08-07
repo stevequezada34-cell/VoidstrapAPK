@@ -7,16 +7,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Android template
-        uses: actions/checkout@v4
-        with:
-          repository: android/ndk-samples
-          path: template
-
       - name: Create project structure
         run: |
-          mkdir -p app
-          cp -r template/hello-jni/* app/
           mkdir -p app/src/main/java/com/voidstrap/android
           mkdir -p app/src/main/assets
           mkdir -p app/src/main/res/layout
@@ -166,6 +158,24 @@ jobs:
               dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
           }
           allprojects { repositories { google(); mavenCentral() } }
+          EOF
+
+          cat > app/build.gradle << 'EOF'
+          apply plugin: 'com.android.application'
+          android {
+              namespace 'com.voidstrap.android'
+              compileSdk 33
+              defaultConfig {
+                  applicationId 'com.voidstrap.android'
+                  minSdk 21
+                  targetSdk 33
+                  versionCode 1
+                  versionName '1.0'
+              }
+          }
+          dependencies {
+              implementation 'androidx.appcompat:appcompat:1.6.1'
+          }
           EOF
 
           cat > gradle.properties << 'EOF'
