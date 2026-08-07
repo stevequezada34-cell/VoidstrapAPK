@@ -25,10 +25,8 @@ jobs:
           mkdir -p app/src/main/java/com/voidstrap/app
           mkdir -p app/src/main/cpp
           mkdir -p app/src/main/res/layout
-          mkdir -p app/src/main/res/values
           mkdir -p gradle/wrapper
 
-          # Create MainActivity.java
           cat > app/src/main/java/com/voidstrap/app/MainActivity.java << 'EOF'
           package com.voidstrap.app;
           import android.os.Bundle;
@@ -66,7 +64,6 @@ jobs:
           }
           EOF
 
-          # Create voidstrap.cpp
           cat > app/src/main/cpp/voidstrap.cpp << 'EOF'
           #include <jni.h>
           #include <string>
@@ -91,7 +88,6 @@ jobs:
           }
           EOF
 
-          # Create activity_main.xml
           cat > app/src/main/res/layout/activity_main.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -135,7 +131,6 @@ jobs:
           </LinearLayout>
           EOF
 
-          # Create AndroidManifest.xml
           cat > app/src/main/AndroidManifest.xml << 'EOF'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
               package="com.voidstrap.app">
@@ -157,11 +152,11 @@ jobs:
           </manifest>
           EOF
 
-          # Create build.gradle
           cat > app/build.gradle << 'EOF'
           plugins {
-              id 'com.android.application'
+              id 'com.android.application' version '7.4.2' apply false
           }
+          apply plugin: 'com.android.application'
           android {
               namespace 'com.voidstrap.app'
               compileSdk 33
@@ -185,7 +180,6 @@ jobs:
           }
           EOF
 
-          # Create CMakeLists.txt
           cat > app/src/main/cpp/CMakeLists.txt << 'EOF'
           cmake_minimum_required(VERSION 3.18.1)
           project("voidstrap")
@@ -193,7 +187,6 @@ jobs:
           target_link_libraries(voidstrap log dl)
           EOF
 
-          # Create settings.gradle
           cat > settings.gradle << 'EOF'
           pluginManagement {
               repositories {
@@ -212,13 +205,11 @@ jobs:
           include ':app'
           EOF
 
-          # Create gradle.properties
           cat > gradle.properties << 'EOF'
           org.gradle.jvmargs=-Xmx2048m
           android.useAndroidX=true
           EOF
 
-          # Create gradle wrapper files
           curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
 
           cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
@@ -242,7 +233,9 @@ jobs:
           EOF
 
       - name: Build APK
-        run: ./gradlew assembleDebug
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
