@@ -70,19 +70,22 @@ jobs:
               android:padding="16dp"
               android:gravity="center"
               android:background="#121212">
-              <TextView android:text="Voidstrap Android"
+              <TextView 
+                  android:text="Voidstrap Android"
                   android:textSize="28sp"
                   android:textStyle="bold"
                   android:textColor="#00BCD4"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginBottom="20dp"/>
-              <TextView android:text="Paste your FFlags JSON:"
+              <TextView 
+                  android:text="Paste your FFlags JSON:"
                   android:textSize="16sp"
                   android:textColor="#FFFFFF"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"/>
-              <EditText android:id="@+id/flagInput"
+              <EditText 
+                  android:id="@+id/flagInput"
                   android:hint='{"FFlagDebugSkyGray": true}'
                   android:textSize="14sp"
                   android:background="#333333"
@@ -93,7 +96,8 @@ jobs:
                   android:gravity="top"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"/>
-              <Button android:id="@+id/injectBtn"
+              <Button 
+                  android:id="@+id/injectBtn"
                   android:text="INJECT FLAGS"
                   android:textSize="18sp"
                   android:backgroundTint="#00BCD4"
@@ -101,7 +105,8 @@ jobs:
                   android:layout_width="match_parent"
                   android:layout_height="60dp"
                   android:layout_marginTop="20dp"/>
-              <TextView android:id="@+id/statusText"
+              <TextView 
+                  android:id="@+id/statusText"
                   android:text="Ready"
                   android:textSize="14sp"
                   android:textColor="#FFFFFF"
@@ -138,7 +143,6 @@ jobs:
                   android:allowBackup="true"
                   android:label="Voidstrap Android"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
-                  <!-- FIXED: Added android:exported="true" to fix the build error -->
                   <activity 
                       android:name=".MainActivity"
                       android:exported="true">
