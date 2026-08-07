@@ -37,7 +37,7 @@ jobs:
               @Override
               protected void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
-                  setContentView(R.layout.new_layout);
+                  setContentView(R.layout.layout);
                   flagInput = findViewById(R.id.flagInput);
                   injectBtn = findViewById(R.id.injectBtn);
                   statusText = findViewById(R.id.statusText);
@@ -68,59 +68,59 @@ jobs:
           }
           EOF
 
-          cat > app/src/main/res/layout/new_layout.xml << 'EOF'
+          cat > app/src/main/res/layout/layout.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="16dp"
-              android:gravity="center"
-              android:background="#121212">
-              <TextView
-                  android:text="Voidstrap Android"
-                  android:textSize="30sp"
-                  android:textStyle="bold"
-                  android:textColor="#00BCD4"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginBottom="20dp"/>
-              <TextView
-                  android:text="Paste your FFlags JSON:"
-                  android:textSize="18sp"
-                  android:textColor="#FFFFFF"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
-              <EditText
-                  android:id="@+id/flagInput"
-                  android:hint='{"FFlagDebugSkyGray": true}'
-                  android:textSize="16sp"
-                  android:background="#333333"
-                  android:textColor="#FFFFFF"
-                  android:hintTextColor="#888888"
-                  android:padding="12dp"
-                  android:minHeight="120dp"
-                  android:gravity="top"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"/>
-              <Button
-                  android:id="@+id/injectBtn"
-                  android:text="INJECT FLAGS"
-                  android:textSize="18sp"
-                  android:backgroundTint="#00BCD4"
-                  android:textColor="#000000"
-                  android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:layout_marginTop="20dp"/>
-              <TextView
-                  android:id="@+id/statusText"
-                  android:text="Ready"
-                  android:textSize="14sp"
-                  android:textColor="#FFFFFF"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="20dp"
-                  android:gravity="center"/>
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:padding="16dp"
+          android:gravity="center"
+          android:background="#121212">
+          <TextView
+          android:text="Voidstrap Android"
+          android:textSize="30sp"
+          android:textStyle="bold"
+          android:textColor="#00BCD4"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="20dp"/>
+          <TextView
+          android:text="Paste your FFlags JSON:"
+          android:textSize="18sp"
+          android:textColor="#FFFFFF"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+          <EditText
+          android:id="@+id/flagInput"
+          android:hint='{"FFlagDebugSkyGray": true}'
+          android:textSize="16sp"
+          android:background="#333333"
+          android:textColor="#FFFFFF"
+          android:hintTextColor="#888888"
+          android:padding="12dp"
+          android:minHeight="120dp"
+          android:gravity="top"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+          <Button
+          android:id="@+id/injectBtn"
+          android:text="INJECT FLAGS"
+          android:textSize="18sp"
+          android:backgroundTint="#00BCD4"
+          android:textColor="#000000"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:layout_marginTop="20dp"/>
+          <TextView
+          android:id="@+id/statusText"
+          android:text="Ready"
+          android:textSize="14sp"
+          android:textColor="#FFFFFF"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:gravity="center"/>
           </LinearLayout>
           EOF
 
@@ -144,21 +144,21 @@ jobs:
 
           cat > app/src/main/AndroidManifest.xml << 'EOF'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-              package="com.voidstrap.android">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <application
-                  android:allowBackup="true"
-                  android:label="Voidstrap Android"
-                  android:theme="@style/Theme.AppCompat.NoActionBar">
-                  <activity
-                      android:name=".MainActivity"
-                      android:exported="true">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-                  </activity>
-              </application>
+          package="com.voidstrap.android">
+          <uses-permission android:name="android.permission.INTERNET" />
+          <application
+          android:allowBackup="true"
+          android:label="Voidstrap Android"
+          android:theme="@style/Theme.AppCompat.NoActionBar">
+          <activity
+          android:name=".MainActivity"
+          android:exported="true">
+          <intent-filter>
+          <action android:name="android.intent.action.MAIN" />
+          <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter>
+          </activity>
+          </application>
           </manifest>
           EOF
 
@@ -169,8 +169,8 @@ jobs:
 
           cat > build.gradle << 'EOF'
           buildscript {
-              repositories { google(); mavenCentral() }
-              dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
+          repositories { google(); mavenCentral() }
+          dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
           }
           allprojects { repositories { google(); mavenCentral() } }
           EOF
@@ -178,18 +178,18 @@ jobs:
           cat > app/build.gradle << 'EOF'
           apply plugin: 'com.android.application'
           android {
-              namespace 'com.voidstrap.android'
-              compileSdk 33
-              defaultConfig {
-                  applicationId 'com.voidstrap.android'
-                  minSdk 21
-                  targetSdk 33
-                  versionCode 1
-                  versionName '1.0'
-              }
+          namespace 'com.voidstrap.android'
+          compileSdk 33
+          defaultConfig {
+          applicationId 'com.voidstrap.android'
+          minSdk 21
+          targetSdk 33
+          versionCode 1
+          versionName '1.0'
+          }
           }
           dependencies {
-              implementation 'androidx.appcompat:appcompat:1.6.1'
+          implementation 'androidx.appcompat:appcompat:1.6.1'
           }
           EOF
 
