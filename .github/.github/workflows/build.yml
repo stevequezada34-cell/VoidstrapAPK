@@ -9,18 +9,49 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout template
+      - name: Checkout Android template
         uses: actions/checkout@v4
         with:
           repository: android/ndk-samples
           path: template
 
-      - name: Copy template files
+      - name: Copy template and create project
         run: |
-          cp -r template/hello-jni/* app/
+          cp -r template/hello-jni/* .
           mkdir -p app/src/main/java/com/voidstrap/app
           mkdir -p app/src/main/cpp
           mkdir -p app/src/main/res/layout
+          mkdir -p gradle/wrapper
+
+      - name: Download gradle-wrapper.jar
+        run: |
+          curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
+
+      - name: Create gradle-wrapper.properties
+        run: |
+          cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.2-bin.zip
+          EOF
+
+      - name: Create gradlew
+        run: |
+          cat > gradlew << 'EOF'
+          #!/bin/sh
+          exec java -cp "$(dirname "$0")/gradle/wrapper/gradle-wrapper.jar" org.gradle.wrapper.GradleWrapperMain "$@"
+          EOF
+          chmod +x gradlew
+
+      - name: Create gradlew.bat
+        run: |
+          cat > gradlew.bat << 'EOF'
+          @if "%DEBUG%" == "" @echo off
+          set DIRNAME=%~dp0
+          if "%DIRNAME%" == "" set DIRNAME=.
+          set APP_BASE_NAME=%~n0
+          set APP_HOME=%DIRNAME%
+          set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
+          "%JAVA_EXE%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %*
+          EOF
 
       - name: Create MainActivity.java
         run: |
@@ -230,9 +261,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Build APK
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
