@@ -68,21 +68,60 @@ jobs:
           }
           EOF
 
-          # Create the layout file normally
-          cat > app/src/main/res/layout/layout.xml << 'EOF'
-          <?xml version="1.0" encoding="utf-8"?>
-          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="16dp" android:gravity="center" android:background="#121212">
-          <TextView android:text="Voidstrap Android" android:textSize="30sp" android:textStyle="bold" android:textColor="#00BCD4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp"/>
-          <TextView android:text="Paste your FFlags JSON:" android:textSize="18sp" android:textColor="#FFFFFF" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-          <EditText android:id="@+id/flagInput" android:hint='{"FFlagDebugSkyGray": true}' android:textSize="16sp" android:background="#333333" android:textColor="#FFFFFF" android:hintTextColor="#888888" android:padding="12dp" android:minHeight="120dp" android:gravity="top" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-          <Button android:id="@+id/injectBtn" android:text="INJECT FLAGS" android:textSize="18sp" android:backgroundTint="#00BCD4" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="60dp" android:layout_marginTop="20dp"/>
-          <TextView android:id="@+id/statusText" android:text="Ready" android:textSize="14sp" android:textColor="#FFFFFF" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:gravity="center"/>
-          </LinearLayout>
-          EOF
-
-          # PATCH THE FILE TO UNDO GITHUB'S MUTILATION
-          sed -i 's/textColor/#textColor/g' app/src/main/res/layout/layout.xml
-          sed -i 's/#textColor/textColor/g' app/src/main/res/layout/layout.xml
+          # WRITE THE FILE USING INDIVIDUAL ECHO COMMANDS TO BYPASS GITHUB'S TEXT DELETER
+          echo '<?xml version="1.0" encoding="utf-8"?>' > app/src/main/res/layout/layout.xml
+          echo '<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_width="match_parent"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_height="match_parent"' >> app/src/main/res/layout/layout.xml
+          echo 'android:orientation="vertical"' >> app/src/main/res/layout/layout.xml
+          echo 'android:padding="16dp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:gravity="center"' >> app/src/main/res/layout/layout.xml
+          echo 'android:background="#121212">' >> app/src/main/res/layout/layout.xml
+          echo '<TextView' >> app/src/main/res/layout/layout.xml
+          echo 'android:text="Voidstrap Android"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textSize="30sp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textStyle="bold"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textColor="#00BCD4"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_width="wrap_content"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_height="wrap_content"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_marginBottom="20dp"/>' >> app/src/main/res/layout/layout.xml
+          echo '<TextView' >> app/src/main/res/layout/layout.xml
+          echo 'android:text="Paste your FFlags JSON:"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textSize="18sp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textColor="#FFFFFF"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_width="wrap_content"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_height="wrap_content"/>' >> app/src/main/res/layout/layout.xml
+          echo '<EditText' >> app/src/main/res/layout/layout.xml
+          echo 'android:id="@+id/flagInput"' >> app/src/main/res/layout/layout.xml
+          echo 'android:hint="{\"FFlagDebugSkyGray\": true}"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textSize="16sp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:background="#333333"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textColor="#FFFFFF"' >> app/src/main/res/layout/layout.xml
+          echo 'android:hintTextColor="#888888"' >> app/src/main/res/layout/layout.xml
+          echo 'android:padding="12dp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:minHeight="120dp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:gravity="top"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_width="match_parent"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_height="wrap_content"/>' >> app/src/main/res/layout/layout.xml
+          echo '<Button' >> app/src/main/res/layout/layout.xml
+          echo 'android:id="@+id/injectBtn"' >> app/src/main/res/layout/layout.xml
+          echo 'android:text="INJECT FLAGS"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textSize="18sp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:backgroundTint="#00BCD4"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textColor="#000000"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_width="match_parent"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_height="60dp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_marginTop="20dp"/>' >> app/src/main/res/layout/layout.xml
+          echo '<TextView' >> app/src/main/res/layout/layout.xml
+          echo 'android:id="@+id/statusText"' >> app/src/main/res/layout/layout.xml
+          echo 'android:text="Ready"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textSize="14sp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:textColor="#FFFFFF"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_width="match_parent"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_height="wrap_content"' >> app/src/main/res/layout/layout.xml
+          echo 'android:layout_marginTop="20dp"' >> app/src/main/res/layout/layout.xml
+          echo 'android:gravity="center"/>' >> app/src/main/res/layout/layout.xml
+          echo '</LinearLayout>' >> app/src/main/res/layout/layout.xml
 
           cat > app/src/main/assets/inject.lua << 'EOF'
           local flags = [[FLAGS_JSON]]
