@@ -68,60 +68,8 @@ jobs:
           }
           EOF
 
-          cat > app/src/main/res/layout/layout.xml << 'EOF'
-          <?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical"
-          android:padding="16dp"
-          android:gravity="center"
-          android:background="#121212">
-          <TextView
-          android:text="Voidstrap Android"
-          android:textSize="30sp"
-          android:textStyle="bold"
-          android:textColor="#00BCD4"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="20dp"/>
-          <TextView
-          android:text="Paste your FFlags JSON:"
-          android:textSize="18sp"
-          android:textColor="#FFFFFF"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"/>
-          <EditText
-          android:id="@+id/flagInput"
-          android:hint='{"FFlagDebugSkyGray": true}'
-          android:textSize="16sp"
-          android:background="#333333"
-          android:textColor="#FFFFFF"
-          android:hintTextColor="#888888"
-          android:padding="12dp"
-          android:minHeight="120dp"
-          android:gravity="top"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
-          <Button
-          android:id="@+id/injectBtn"
-          android:text="INJECT FLAGS"
-          android:textSize="18sp"
-          android:backgroundTint="#00BCD4"
-          android:textColor="#000000"
-          android:layout_width="match_parent"
-          android:layout_height="60dp"
-          android:layout_marginTop="20dp"/>
-          <TextView
-          android:id="@+id/statusText"
-          android:text="Ready"
-          android:textSize="14sp"
-          android:textColor="#FFFFFF"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="20dp"
-          android:gravity="center"/>
-          </LinearLayout>
-          EOF
+          # DECODING THE LAYOUT VIA BASE64 TO BYPASS YAML PARSING
+          echo 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48TGluZWFyTGF5b3V0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCIKICAgICAgICAgIGFuZHJvaWQ6bGF5b3V0X3dpZHRoPSJtYXRjaF9wYXJlbnQiCiAgICAgICAgICBhbmRyb2lkOmxheW91dF9oZWlnaHQ9Im1hdGNoX3BhcmVudCIKICAgICAgICAgIGFuZHJvaWQ6b3JpZW50YXRpb249InZlcnRpY2FsIgogICAgICAgICAgYW5kcm9pZDpwYWRkaW5nPSIxNnBwIgogICAgICAgICAgYW5kcm9pZDpncmF2aXR5PSJjZW50ZXIiCiAgICAgICAgICBhbmRyb2lkOmJhY2tncm91bmQ9IiMxMjEyMTIiPgogICAgICAgICAgPFRleHRWaWV3CiAgICAgICAgICBhbmRyb2lkOnRleHQ9IlZvaWRzdHJhcCBBbmRyb2lkIgogICAgICAgICAgYW5kcm9pZDp0ZXh0U2l6ZT0iMzBzcCIKICAgICAgICAgIGFuZHJvaWQ6dGV4dFN0eWxlPSJib2xkIgogICAgICAgICAgYW5kcm9pZDp0ZXh0Q29sb3I9IiMwMEJDRDQiCiAgICAgICAgICBhbmRyb2lkOmxheW91dF93aWR0aD0id3JhcF9jb250ZW50IgogICAgICAgICAgYW5kcm9pZDpsYXlvdXRfaGVpZ2h0PSJ3cmFwX2NvbnRlbnQiCiAgICAgICAgICBhbmRyb2lkOmxheW91dF9tYXJnaW5Cb3R0b209IjIwcHAiLz4KICAgICAgICAgIDxUZXh0VmlldwogICAgICAgICAgYW5kcm9pZDp0ZXh0PSJQYXN0ZSB5b3VyIEZGbGFncyBKU09OOiIKICAgICAgICAgIGFuZHJvaWQ6dGV4dFNpemU9IjE4c3AiCiAgICAgICAgICBhbmRyb2lkOnRleHRDb2xvcj0iI0ZGRkZGRiIKICAgICAgICAgIGFuZHJvaWQ6bGF5b3V0X3dpZHRoPSJ3cmFwX2NvbnRlbnQiCiAgICAgICAgICBhbmRyb2lkOmxheW91dF9oZWlnaHQ9IndyYXBfY29udGVudCIvPgogICAgICAgICAgPEVkaXRUZXh0CiAgICAgICAgICBhbmRyb2lkOmlkPSIrQGlkL2ZsYWdJbnB1dCIKICAgICAgICAgIGFuZHJvaWQ6aGludD0neyJGRmxhZ0RlYnVnU2t5R3JheSI6IHRydWV9JwogICAgICAgICAgYW5kcm9pZDp0ZXh0U2l6ZT0iMTZzcCIKICAgICAgICAgIGFuZHJvaWQ6YmFja2dyb3VuZD0iIzMzMzMzMyIKICAgICAgICAgIGFuZHJvaWQ6dGV4dENvbG9yPSIjRkZGRkZGIgogICAgICAgICAgYW5kcm9pZDpoaW50VGV4dENvbG9yPSIjODg4ODg4IgogICAgICAgICAgYW5kcm9pZDpwYWRkaW5nPSIxMnBwIgogICAgICAgICAgYW5kcm9pZDptaW5IZWlnaHQ9IjEycHBzIgogICAgICAgICAgYW5kcm9pZDpncmF2aXR5PSJ0b3AiCiAgICAgICAgICBhbmRyb2lkOmxheW91dF93aWR0aD0ibWF0Y2hfcGFyZW50IgogICAgICAgICAgYW5kcm9pZDpsYXlvdXRfaGVpZ2h0PSJ3cmFwX2NvbnRlbnQiLz4KICAgICAgICAgIDxCdXR0b24KICAgICAgICAgIGFuZHJvaWQ6aWQ9IitAaWQvaW5qZWN0QnRuIgogICAgICAgICAgYW5kcm9pZDp0ZXh0PSJJTkpFQ1QgRkxBR1MiCiAgICAgICAgICBhbmRyb2lkOnRleHRTaXplPSIxOHNwIgogICAgICAgICAgYW5kcm9pZDpiYWNrZ3JvdW5kVGludD0iIzAwQkNENCIKICAgICAgICAgIGFuZHJvaWQ6dGV4dENvbG9yPSIjMDAwMDAwIgogICAgICAgICAgYW5kcm9pZDpsYXlvdXRfd2lkdGg9Im1hdGNoX3BhcmVudCIKICAgICAgICAgIGFuZHJvaWQ6bGF5b3V0X2hlaWdodD0iNjBkcCIKICAgICAgICAgIGFuZHJvaWQ6bGF5b3V0X21hcmdpblRvcD0iMjBkcCIvPgogICAgICAgICAgPFRleHRWaWV3CiAgICAgICAgICBhbmRyb2lkOmlkPSIrQGlkL3N0YXR1c1RleHQiCiAgICAgICAgICBhbmRyb2lkOnRleHQ9IlJlYWR5IgogICAgICAgICAgYW5kcm9pZDp0ZXh0U2l6ZT0iMTRzcCIKICAgICAgICAgIGFuZHJvaWQ6dGV4dENvbG9yPSIjRkZGRkZGIgogICAgICAgICAgYW5kcm9pZDpsYXlvdXRfd2lkdGg9Im1hdGNoX3BhcmVudCIKICAgICAgICAgIGFuZHJvaWQ6bGF5b3V0X2hlaWdodD0id3JhcF9jb250ZW50IgogICAgICAgICAgYW5kcm9pZDpsYXlvdXRfbWFyZ2luVG9wPSIyMGRwIgogICAgICAgICAgYW5kcm9pZDpncmF2aXR5PSJjZW50ZXIiLz4KICAgICAgICAgIDwvTGluZWFyTGF5b3V0Pg==' | base64 -d > app/src/main/res/layout/layout.xml
 
           cat > app/src/main/assets/inject.lua << 'EOF'
           local flags = [[FLAGS_JSON]]
