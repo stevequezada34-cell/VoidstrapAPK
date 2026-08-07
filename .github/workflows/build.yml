@@ -6,16 +6,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/android-actions/sdk:latest
+
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Create project files
         run: |
           mkdir -p app/src/main/java/com/voidstrap/android
@@ -156,24 +150,14 @@ jobs:
           </manifest>
           EOF
 
-      - name: Build APK with Gradle (offline-safe)
+      - name: Build APK
         run: |
           cat > build.gradle << 'EOF'
           buildscript {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-              dependencies {
-                  classpath 'com.android.tools.build:gradle:7.4.2'
-              }
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
           }
-          allprojects {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
+          allprojects { repositories { google(); mavenCentral() } }
           EOF
 
           cat > app/build.gradle << 'EOF'
@@ -202,16 +186,11 @@ jobs:
           cat > gradle.properties << 'EOF'
           org.gradle.jvmargs=-Xmx2048m
           android.useAndroidX=true
-          org.gradle.dependency.verification.console=verbose
           EOF
 
-      - name: Build APK with retry
-        run: |
           wget -q https://services.gradle.org/distributions/gradle-8.2-bin.zip
           unzip -q gradle-8.2-bin.zip
-          export GRADLE_OPTS="-Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort="
-          ./gradle-8.2/bin/gradle assembleDebug --no-daemon --refresh-dependencies || \
-          ./gradle-8.2/bin/gradle assembleDebug --no-daemon --offline
+          ./gradle-8.2/bin/gradle assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
