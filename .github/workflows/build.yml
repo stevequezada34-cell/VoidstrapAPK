@@ -37,7 +37,7 @@ jobs:
               @Override
               protected void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
-                  setContentView(R.layout.main_activity);
+                  setContentView(R.layout.new_layout);
                   flagInput = findViewById(R.id.flagInput);
                   injectBtn = findViewById(R.id.injectBtn);
                   statusText = findViewById(R.id.statusText);
@@ -68,7 +68,7 @@ jobs:
           }
           EOF
 
-          cat > app/src/main/res/layout/main_activity.xml << 'EOF'
+          cat > app/src/main/res/layout/new_layout.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
@@ -79,7 +79,7 @@ jobs:
               android:background="#121212">
               <TextView
                   android:text="Voidstrap Android"
-                  android:textSize="28sp"
+                  android:textSize="30sp"
                   android:textStyle="bold"
                   android:textColor="#00BCD4"
                   android:layout_width="wrap_content"
@@ -87,14 +87,14 @@ jobs:
                   android:layout_marginBottom="20dp"/>
               <TextView
                   android:text="Paste your FFlags JSON:"
-                  android:textSize="16sp"
+                  android:textSize="18sp"
                   android:textColor="#FFFFFF"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"/>
               <EditText
                   android:id="@+id/flagInput"
                   android:hint='{"FFlagDebugSkyGray": true}'
-                  android:textSize="14sp"
+                  android:textSize="16sp"
                   android:background="#333333"
                   android:textColor="#FFFFFF"
                   android:hintTextColor="#888888"
